@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elena Santarossa</title>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px 15px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(32px, 8vw, 55px);
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .divisore {
+            width: 80px;
+            height: 2px;
+            background-color: #2c314a;
+            margin: 0 auto 20px auto;
+            border: none;
+        }
+
+        .sottotitolo {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(20px, 5vw, 30px);
+            color: #2c314a;
+            margin-bottom: 35px;
+        }
+
+        .corpo {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .sezione-titolo {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 600;
+            color: #2c314a;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+
+        .contenitore-firme {
+            max-width: 850px;
+            margin: 0 auto 35px auto;
+            padding: 0 10px;
+            text-align: right;
+        }
+
+        .firme-famiglie {
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            color: #2c314a;
+            font-style: italic;
+        }
+
+        .galleria {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        @media (max-width: 768px) {
+            .galleria {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .elemento-galleria {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .foto-profilo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: block;
+        }
+
+        .foto-profilo:hover {
+            opacity: 0.85;
+        }
+
+        dialog {
+            border: none;
+            padding: 0;
+            background: transparent;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        dialog img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 4px;
+            display: block;
+        }
+
+        /* Stile aggiornato per il titolo della foto (senza grassetto) */
+        .titolo-foto {
+            font-family: 'Cinzel', serif;
+            font-size: 17px;
+            color: #000000;
+            margin-top: 12px;
+            font-weight: 400; /* Riportato a normale */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Elena Santarossa</h1>
+    
+    <hr class="divisore">
+
+    <p class="sottotitolo">
+        Apprendista pittrice
+    </p>
+
+    <div class="sezione-titolo">
+        Presentazione
+    </div>
+
+    <p class="corpo" style="max-width: 850px; margin-left: auto; margin-right: auto; text-align: justify; padding: 0 15px;">
+        Curare una raccolta alla memoria di Gino Bertelloni (20 agosto 1893 - 15 Luglio 1962) è un atto dovuto alla grande Opera che ci ha lasciato. <br><br>
+        È una necessità, che noi, nipoti e pronipoti, sentiamo, affinchè si possa dare un nome alla mano che ha dato alla luce molte
+        delle sculture che abitano il cimitero di Noale, che danno un volto ai nostri defunti, ma anche a personaggi illustri, 
+        comme PierFortunato Calvi. <br><br>
+        Inoltre, ci è sembrato naturale accostare alla sua produzione, l'Opera pittorica della figlia Luciana (15 luglio 1936).
+    </p>
+
+    <div class="sezione-titolo">
+        Produzione artistica
+    </div>
+
+    <div class="galleria">
+        {% for foto in foto_list %}
+            <div class="elemento-galleria">
+                <div>
+                    <img src="{{ url_for('static', filename='opere/' + foto) }}" 
+                         alt="Quadri di Elena" 
+                         class="foto-profilo"
+                         onclick="document.getElementById('modal-{{ loop.index }}').showModal()">
+                </div>
+
+                <div class="titolo-foto">
+                    {{ foto.rsplit('.', 1)[0] }}
+                </div>
+
+                <dialog id="modal-{{ loop.index }}" onclick="this.close()">
+                    <img src="{{ url_for('static', filename='luciana/opere/' + foto) }}" alt="Foto ingrandita">
+                </dialog>
+             </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
